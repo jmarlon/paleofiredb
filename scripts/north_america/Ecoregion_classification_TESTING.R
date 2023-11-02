@@ -28,6 +28,7 @@ while (dev.cur() != 1) {
 }
 
 library(stars)
+library(sf)
 library(ncdf4)
 library(tidyverse)
 
@@ -40,6 +41,8 @@ wd <- "/Users/Nick/Google_Drive/RESEARCH_PROJECTS/NAmerica_wildfire_trends/git_r
 setwd(wd)
 
 # ============================= Load in the Data ============================= ####
+
+# ------------------- Load the netCDF files as stars objects -------------------- #
 
 # Set the path of the netCDF files 
 griddat_path <- "/Users/Nick/Google_Drive/RESEARCH_PROJECTS/NAmerica_wildfire_trends/Local_work/Region_classification/EcoClim_spatial_data/Thompson_2023/Agriddeddatabas/Thompson_and_others_2023_Atlas_data_release_netCDF_files"
@@ -54,6 +57,17 @@ eco_grd.bailey <- read_stars(paste(griddat_path, fname, sep = "/"))
 
 fname <- "WWF_ecoregions_on_25km_grid.nc"
 eco_grd.wwf <- read_stars(paste(griddat_path, fname, sep = "/"))
+
+# ------------------- Load the csv files as data frames objects ----------------- #
+
+csv_path <- "/Users/Nick/Google_Drive/RESEARCH_PROJECTS/NAmerica_wildfire_trends/Local_work/Region_classification/EcoClim_spatial_data/Thompson_2023/Agriddeddatabas/Thompson_and_others_2023_Atlas_data_release_csv_files"
+fname <- "Ecoregions_and_Potential_Natural_Vegetation_on_25km_Grid.csv"
+
+# Load a data frame that contains classifier information, each ecoregion at the 
+# highest level of specificity has a unique identifier, this data frame will serve
+# to connect the unique IDs with the lower level classifications
+
+eco_info <- read.csv(paste(csv_path, fname, sep = "/"), header = TRUE)
 
 # ========================= Explore Data Structure ========================== ####
 
@@ -103,7 +117,149 @@ plot(eco_grd.wwf) # This plots the first layer which seems to be the site ID
 # of this variable when we do a grid search, we will need to find the nearest 
 # neighbor that has a terrestrial ecosystem classification 
 
+# Lets take a peak at the "Lake_or_Rock_and_ice" map 
+eco_grd.wwf.lake_roc_ice <- eco_grd.wwf["Lake_or_Rock_and_ice", ]
 
+test_mat <- as.matrix(eco_grd.wwf.lake_roc_ice)
+
+plot(eco_grd.wwf.lake_roc_ice)
+ 
+# Peak at maps of some other vars 
+
+eco_grd.wwf.upMidwest_forsav_trans <- eco_grd.wwf["Upper_Midwest_Forest_Savanna_Transition_Zone", ]
+plot(eco_grd.wwf.upMidwest_forsav_trans)
+
+# ==================== Create lower level region groups ===================== ####
+
+# Lets start by sub-setting the eco_info data frame to only include the Bailey identifier info
+# we will use this to plot groups 
+bailey_info <- eco_info %>%
+  select(BAILEY_IDENTIFIER, BAILEY_DOMAIN_.LEVEL_I., BAILEY_DIVISION_.LEVEL_II., 
+         BAILEY_PROVINCE_.LEVEL_III.)
+
+# Rename the variables to make this a bit cleaner 
+bailey_info <- bailey_info %>%
+  rename(
+    id = BAILEY_IDENTIFIER,
+    domain_i = BAILEY_DOMAIN_.LEVEL_I.,
+    division_ii = BAILEY_DIVISION_.LEVEL_II.,
+    province_iii = BAILEY_PROVINCE_.LEVEL_III.
+  )
+
+# Find unique names of each region type 
+types.domain <- unique(bailey_info$domain_i)
+types.division <- unique(bailey_info$division_ii)
+types.province <- unique(bailey_info$province_iii)
+
+# Create empty lists to hold the unique ecoregion identifiers for each of the 
+# region types 
+
+domain_list <- list()
+division_list <- list()
+province_list <- list()
+
+# Loop through the domains and find the ecoregion ids for each domain
+for (i in seq_along(types.domain)){
+  
+  # Filter for each domain type
+  filt_dat <- bailey_info %>%
+    filter(domain_i == types.domain[i]) %>%
+    distinct(id)
+  
+  # Add the unique ids to the list 
+  domain_list[[types.domain[i]]] <- filt_dat
+}
+
+# Loop through the divisions and find the ecoregion ids for each division
+for (i in seq_along(types.division)){
+  
+  # Filter for each domain type
+  filt_dat <- bailey_info %>%
+    filter(division_ii == types.division[i]) %>%
+    distinct(id)
+  
+  # Add the unique ids to the list 
+  division_list[[types.division[i]]] <- filt_dat
+}
+
+# Loop through the province and find the ecoregion ids for each province
+for (i in seq_along(types.province)){
+  
+  # Filter for each domain type
+  filt_dat <- bailey_info %>%
+    filter(province_iii == types.province[i]) %>%
+    distinct(id)
+  
+  # Add the unique ids to the list 
+  province_list[[types.province[i]]] <- filt_dat
+}
+
+
+
+
+
+
+
+
+# Convert the stars object to an sf object 
+eco_grd_sf <- st_as_sf(eco_grd.bailey.all)
+
+# # Perform a join of the eco_info df with the sf object to get the domain info for each ecoregion
+# eco_grd_sf_joined <- left_join(eco_grd_sf, eco_info, by = c("ALL_BAILEY_ECOREGIONS" 
+#                                                             = "BAILEY_IDENTIFIER"))
+# ^^^ fails because in the sf object the ALL_BAILEY_ECOREGIONS has <units> while the BAILEY_IDENTIFIER
+# in the data frame is <integer> 
+
+# # Convert back to stars object 
+# eco_grd_stars_joined <- st_as_stars(eco_grd_sf_joined)
+# 
+# # Plot the ecoregions grouped by domain 
+# plot(eco_grd_stars_joined["BAILEY_DOMAIN_.LEVEL_I."], key.pos = 1, reset = FALSE,
+#      main = "Ecoregions Grouped by Domain Level I")
+
+
+# Extract the attribute as a vector (numeric) without units
+all_bailey_ecoregions <- as.numeric(stars::st_get_dimension_values(eco_grd.bailey.all, 'ALL_BAILEY_ECOREGIONS'))
+
+# Create a new data frame that matches ALL_BAILEY_ECOREGIONS with BAILEY_IDENTIFIER
+matching_df <- data.frame(ALL_BAILEY_ECOREGIONS = all_bailey_ecoregions)
+
+# Join the matching data frame with eco_info
+joined_df <- left_join(matching_df, eco_info, by = c("ALL_BAILEY_ECOREGIONS" = "BAILEY_IDENTIFIER"))
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# Assuming 'ALL_BAILEY_ECOREGIONS' is a raster layer inside 'eco_grd.bailey.all'
+all_bailey_values <- eco_grd.bailey.all[["ALL_BAILEY_ECOREGIONS"]]
+
+# Now you can convert this to a plain numeric vector if needed
+all_bailey_values <- as.vector(all_bailey_values)
+
+# Next, you'll want to make sure that your 'eco_info' dataframe is ready for joining
+bailey_info$id <- as.integer(bailey_info$id)
+
+# If 'all_bailey_values' is a matrix or array, you need to convert it to a vector and create a data frame
+# You might also need to melt it if it's not already a long format data frame
+matching_df <- data.frame(ALL_BAILEY_ECOREGIONS = all_bailey_values)
+
+# Join the data frames
+joined_df <- left_join(matching_df, bailey_info, by = c("ALL_BAILEY_ECOREGIONS" = "id"))
+
+# Check the structure of the joined_df
+str(joined_df)
+
+# If your stars object is 2-dimensional, you can use st_as_sf to convert to an sf object for ggplot2
+sf_eco_grd <- st_as_sf(eco_grd.bailey.all)
+
+# Assuming joined_df is now a long-format data frame with a key to join with sf_eco_grd
+sf_joined <- left_join(sf_eco_grd, joined_df, by = "ALL_BAILEY_ECOREGIONS")
+
+# Now plotting with ggplot2
+ggplot(sf_joined, aes(fill = BAILEY_DOMAIN_LEVEL_I)) +
+  geom_sf() +
+  scale_fill_viridis_c() +
+  theme_minimal() +
+  labs(fill = "Domain Level I")
 
 
 
