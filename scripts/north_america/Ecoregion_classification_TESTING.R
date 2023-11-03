@@ -146,6 +146,11 @@ bailey_info <- bailey_info %>%
     province_iii = BAILEY_PROVINCE_.LEVEL_III.
   )
 
+# Set up a key for the vegetation classes by ecoregion identifier 
+veg_class_key <- bailey_info %>%
+  distinct() %>% 
+  arrange(id)
+
 # Find unique names of each region type 
 types.domain <- unique(bailey_info$domain_i)
 types.division <- unique(bailey_info$division_ii)
