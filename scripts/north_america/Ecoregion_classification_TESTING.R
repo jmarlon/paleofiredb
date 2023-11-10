@@ -28,6 +28,8 @@ while (dev.cur() != 1) {
 }
 
 library(stars)
+library(terra)
+library(raster)
 library(sf)
 library(ncdf4)
 library(tidyverse)
@@ -36,8 +38,7 @@ library(tidyverse)
 date_str <- format(Sys.Date(), format = "%y%m%d") #Get today's date for saving plots 
 
 # Set the working directory as the git repo local clone
-
-wd <- "/Users/Nick/Google_Drive/RESEARCH_PROJECTS/NAmerica_wildfire_trends/git_repo/paleofiredb/scripts/north_america"
+wd <- "/Users/Nick/Google_Drive/RESEARCH_PROJECTS/YALE_PALEOFIRE/NAmerica_wildfire_trends/git_repo/paleofiredb"
 setwd(wd)
 
 # ============================= Load in the Data ============================= ####
@@ -45,20 +46,43 @@ setwd(wd)
 # ------------------- Load the netCDF files as stars objects -------------------- #
 
 # Set the path of the netCDF files 
-griddat_path <- "/Users/Nick/Google_Drive/RESEARCH_PROJECTS/NAmerica_wildfire_trends/Local_work/Region_classification/EcoClim_spatial_data/Thompson_2023/Agriddeddatabas/Thompson_and_others_2023_Atlas_data_release_netCDF_files"
+netcdf_dat_path <- "/Users/Nick/Google_Drive/RESEARCH_PROJECTS/YALE_PALEOFIRE/NAmerica_wildfire_trends/Local_work/Region_classification/EcoClim_spatial_data/Thompson_2023/Agriddeddatabas/Thompson_and_others_2023_Atlas_data_release_netCDF_files"
+shape_dat_path <- "/Users/Nick/Google_Drive/RESEARCH_PROJECTS/YALE_PALEOFIRE/NAmerica_wildfire_trends/Local_work/Region_classification/RESOLVE_ecoregions_2017/Ecoregions2017"
 
 # play with dynamic loading and naming later using a character array of file names 
 # and putting them into a structure like griddat.bailey_eco, griddat.kuchler_eco, ...
 
 # Set the file name of the netCDF and use the stars package to read the netCDF into 
 # R as a stars object 
-fname <- "Bailey_ecoregions_on_25km_grid.nc"
-eco_grd.bailey <- read_stars(paste(griddat_path, fname, sep = "/"))
+fname_bailey <- "Bailey_ecoregions_on_25km_grid.nc"
+eco_grd.bailey <- read_stars(paste(netcdf_dat_path, fname_bailey, sep = "/"))
 
-fname <- "WWF_ecoregions_on_25km_grid.nc"
-eco_grd.wwf <- read_stars(paste(griddat_path, fname, sep = "/"))
+fname_wwf <- "WWF_ecoregions_on_25km_grid.nc"
+eco_grd.wwf <- read_stars(paste(netcdf_dat_path, fname_wwf, sep = "/"))
 
-# ------------------- Load the csv files as data frames objects ----------------- #
+# The stars object is proving difficult for me to understand how to manip. After 
+# consulting with Emily Goddard (YPCCC) she suggested I just load the variable I
+# want from the netCDF as raster data and use "terra" 
+
+# Note: Emily's method used raster, which is being deprecated, just follow this 
+# option for now, but if you want this code to stand the test of time, check Riley's
+# powerpoint and or ask Carla's group about the terra version of raster::brick 
+
+# Load in the Bailey "ALL_BAILEY_ECOREGIONS" variable using raster 
+bailey_er_rast <- raster::brick(paste(netcdf_dat_path, fname_bailey, sep = "/"), 
+                                varname = "ALL_BAILEY_ECOREGIONS")
+
+# ADD THE WWF DATA HERE, BUT I AM NOT SURE IF SINGLE VAR FOR ALL OR JUST BY CLASSIFCATION BREAKDOWN
+
+# Load in the from the RESOLVE [Dinerstein et al. (2017)] classification scheme shapefile 
+fname_resolve <- "Ecoregions2017"
+
+resolve_shp <- read_sf(dsn = shape_dat_path, layer = fname_resolve)
+
+# ADD HERE THE CSV FILE OF THE NORTH AMERICAN SITES
+# ASK ALI TO DO THIS 
+
+# ------------- Load the csv meta data files as data frames objects ------------- #
 
 csv_path <- "/Users/Nick/Google_Drive/RESEARCH_PROJECTS/NAmerica_wildfire_trends/Local_work/Region_classification/EcoClim_spatial_data/Thompson_2023/Agriddeddatabas/Thompson_and_others_2023_Atlas_data_release_csv_files"
 fname <- "Ecoregions_and_Potential_Natural_Vegetation_on_25km_Grid.csv"
