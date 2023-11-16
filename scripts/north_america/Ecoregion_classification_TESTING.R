@@ -31,8 +31,12 @@ library(stars)
 library(terra)
 library(raster)
 library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(exactextractr)
 library(ncdf4)
 library(tidyverse)
+library(viridis)
 
 
 date_str <- format(Sys.Date(), format = "%y%m%d") #Get today's date for saving plots 
@@ -41,7 +45,49 @@ date_str <- format(Sys.Date(), format = "%y%m%d") #Get today's date for saving p
 wd <- "/Users/Nick/Google_Drive/RESEARCH_PROJECTS/YALE_PALEOFIRE/NAmerica_wildfire_trends/git_repo/paleofiredb"
 setwd(wd)
 
+# ======================= Define any custom functions ======================== ####
+
+# Define a palette function
+palette_func <- colorRampPalette(viridis(100))
+
 # ============================= Load in the Data ============================= ####
+
+# ------------------------- Load the WORKING site list -------------------------- #
+
+csv_path <- "/Users/Nick/Google_Drive/RESEARCH_PROJECTS/YALE_PALEOFIRE/NAmerica_wildfire_trends/Local_work/Region_classification/CSVs"
+fname <- "Crude_NA_site_list.csv"
+
+na_sites <- read.csv(paste(csv_path, fname, sep = "/"), header = TRUE)
+na_sites.coordOnly <- na_sites
+na_sites.coordOnly$ID_ENTITY <- NULL
+
+# Convert dataframe to sf object
+## first argument is dataframe
+## coords are the names of the longitude and latitude columns
+## crs is the coordinate reference system to be used
+na_sites_sf <- sf::st_as_sf(na_sites.coordOnly, coords = c("longitude", "latitude"), 
+                        crs = 4326, agr = "constant")
+# 4326 is the coordinate reference system for WGS84
+# 4269 is the coordinate reference system for NAD83
+
+# Convert the sf site data into spatial vectors
+na_sites.spatvect_points <- terra::vect(na_sites_sf)
+
+# Test plot 
+coastline <- ne_coastline(scale = 'medium', returnclass = 'sf')
+
+test_map <- ggplot() +
+  geom_sf(data = coastline) +
+  geom_sf(data = na_sites_sf, color = 'red') +
+  theme_minimal()
+
+xlims <- c(-180, -50)
+ylims<- c(10, 90)
+
+test_map <- test_map + coord_sf(xlim = xlims, ylim = ylims, expand = FALSE)
+print(test_map)
+
+# Okay not very pretty map, but proof that this is working, next try the spatial join
 
 # ------------------- Load the netCDF files as stars objects -------------------- #
 
@@ -71,6 +117,80 @@ eco_grd.wwf <- read_stars(paste(netcdf_dat_path, fname_wwf, sep = "/"))
 # Load in the Bailey "ALL_BAILEY_ECOREGIONS" variable using raster 
 bailey_er_rast <- raster::brick(paste(netcdf_dat_path, fname_bailey, sep = "/"), 
                                 varname = "ALL_BAILEY_ECOREGIONS")
+
+# Test plot 
+plot(bailey_er_rast)
+
+# Try overlaying the sites on the Bailey Map 
+
+# Project the Bailey ecoregions to WGS84 CRS
+new_crs <- "+proj=longlat +datum=WGS84 +no_defs"  # PROJ4 string for WGS 84
+bailey_er_rast.wgs84 <- projectRaster(bailey_er_rast, crs = new_crs)
+
+# Test new projection
+plot(bailey_er_rast.wgs84)
+
+# Convert the raster to a data.frame to plot with ggplot 
+bailey_er_df <- as.data.frame(raster::rasterToPoints(bailey_er_rast.wgs84), stringsAsFactors = FALSE)
+
+bailey_site_overlay <- ggplot() + 
+  geom_raster(data = bailey_er_df, aes(x = x, y = y, fill = layer)) +
+  geom_sf(data = na_sites_sf, color = "red") +
+  # scale_fill_viridis_c(limits = c(1, 56)) + 
+  scale_fill_gradientn(colors = palette_func(56), limits = c(1, 56)) +
+  theme_minimal()
+
+print(bailey_site_overlay)
+
+# Nice it works, now try the spatial join 
+
+# Set up the spatial join 
+
+# Convert raster data to SpatRaster
+bailey_er_rast.wgs84.spatrast <- terra::rast(bailey_er_rast.wgs84)
+
+# Convert raster data to SpatExtent
+bailey_er_rast.wgs84.spatext <- terra::ext(bailey_er_rast.wgs84)
+
+# test the spatial join 
+
+# Extract the values from the raster at the sf points 
+na_sites.bailey_er_vals <- terra::extract(bailey_er_rast.wgs84.spatrast, na_sites.spatvect_points)
+
+# Combine the er codes back to the site sf object 
+na_sites_sf$bailey_er_codes <- na_sites.bailey_er_vals$layer
+
+# Test plot 
+coded_na_site_map <- ggplot() +
+  geom_sf(data = coastline) +
+  geom_sf(data = na_sites_sf, aes(color = bailey_er_codes)) +
+  # scale_fill_viridis_c(limits = c(1, 56)) +
+  scale_color_gradientn(colors = palette_func(56), limits = c(1, 56)) +
+  theme_minimal()
+
+xlims <- c(-180, -50)
+ylims<- c(10, 90)
+
+coded_na_site_map <- coded_na_site_map + coord_sf(xlim = xlims, ylim = ylims, expand = FALSE)
+print(coded_na_site_map)
+
+# Convert the sf object with the ER codes to data.frame
+na_sites.bailey_er_df <- as.data.frame(na_sites_sf)
+
+# Add the bailey extracted codes to original csv file for site list 
+na_sites$Bailey_ER_code <- na_sites.bailey_er_df$bailey_er_codes
+
+
+
+# ========================= END OF TESTING FOR NOW =============================== ####
+
+# Intersect points with raster data
+point_rast <- terra::intersect(na_sites.spatvect_points,bailey_er_rast.wgs84.spatext)
+
+# Change data back to sf objects 
+point_rast_sf <- sf::st_as_sf(point_rast)
+
+plot(point_rast_sf)
 
 # ADD THE WWF DATA HERE, BUT I AM NOT SURE IF SINGLE VAR FOR ALL OR JUST BY CLASSIFCATION BREAKDOWN
 
