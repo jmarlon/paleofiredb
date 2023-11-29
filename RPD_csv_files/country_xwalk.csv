@@ -1,0 +1,165 @@
+Country,ISO3,Region_EPI,Continent,"Secondary Continent",Island
+Albania,ALB,"Eastern Europe",Europe,,FALSE
+Algeria,DZA,"Greater Middle East",Africa,,FALSE
+Angola,AGO,"Sub-Saharan Africa",Africa,,FALSE
+"Antigua and Barbuda",ATG,"Latin America & Caribbean","North America",,TRUE
+Argentina,ARG,"Latin America & Caribbean","South America",,FALSE
+Armenia,ARM,"Former Soviet States",Asia,,FALSE
+Australia,AUS,"Global West",Oceania,,FALSE
+Austria,AUT,"Global West",Europe,,FALSE
+Azerbaijan,AZE,"Former Soviet States",Europe,Asia,FALSE
+Bangladesh,BGD,"Southern Asia",Asia,,FALSE
+Barbados,BRB,"Latin America & Caribbean","North America",,TRUE
+Belgium,BEL,"Global West",Europe,,FALSE
+Belize,BLZ,"Latin America & Caribbean","North America",,FALSE
+Benin,BEN,"Sub-Saharan Africa",Africa,,FALSE
+Bolivia,BOL,"Latin America & Caribbean","South America",,FALSE
+"Bosnia and Herzegovina",BIH,"Eastern Europe",Europe,,FALSE
+Botswana,BWA,"Sub-Saharan Africa",Africa,,FALSE
+Brazil,BRA,"Latin America & Caribbean","South America",,FALSE
+Brunei,BRN,Asia-Pacific,Asia,,FALSE
+Bulgaria,BGR,"Eastern Europe",Europe,,FALSE
+"Burkina Faso",BFA,"Sub-Saharan Africa",Africa,,FALSE
+Burundi,BDI,"Sub-Saharan Africa",Africa,,FALSE
+Cambodia,KHM,Asia-Pacific,Asia,,FALSE
+Cameroon,CMR,"Sub-Saharan Africa",Africa,,FALSE
+Canada,CAN,"Global West","North America",,FALSE
+"Cape Verde",CPV,"Sub-Saharan Africa",Africa,,TRUE
+"Central African Republic",CAF,"Sub-Saharan Africa",Africa,,FALSE
+Chad,TCD,"Sub-Saharan Africa",Africa,,FALSE
+Chile,CHL,"Latin America & Caribbean","South America",,FALSE
+Colombia,COL,"Latin America & Caribbean","South America",,FALSE
+Comoros,COM,"Sub-Saharan Africa",Africa,,TRUE
+Congo,COG,"Sub-Saharan Africa",Africa,,FALSE
+"Costa Rica",CRI,"Latin America & Caribbean","North America",,FALSE
+"Cote d'Ivoire",CIV,"Sub-Saharan Africa",Africa,,FALSE
+Croatia,HRV,"Eastern Europe",Europe,,FALSE
+Cyprus,CYP,"Eastern Europe",Europe,,TRUE
+Czechia,CZE,"Eastern Europe",Europe,,FALSE
+"Democratic Republic of Congo",COD,"Sub-Saharan Africa",Africa,,FALSE
+Denmark,DNK,"Global West",Europe,,FALSE
+Djibouti,DJI,"Sub-Saharan Africa",Africa,,FALSE
+Dominica,DMA,"Latin America & Caribbean","North America",,TRUE
+"Dominican Republic",DOM,"Latin America & Caribbean","North America",,TRUE
+Ecuador,ECU,"Latin America & Caribbean","South America",,FALSE
+Egypt,EGY,"Greater Middle East",Africa,Asia,FALSE
+"El Salvador",SLV,"Latin America & Caribbean","North America",,FALSE
+"Equatorial Guinea",GNQ,"Sub-Saharan Africa",Africa,,FALSE
+Eritrea,ERI,"Sub-Saharan Africa",Africa,,FALSE
+Eswatini,SWZ,"Sub-Saharan Africa",Africa,,FALSE
+Ethiopia,ETH,"Sub-Saharan Africa",Africa,,FALSE
+Fiji,FJI,Asia-Pacific,Oceania,,TRUE
+Finland,FIN,"Global West",Europe,,FALSE
+France,FRA,"Global West",Europe,,FALSE
+Gabon,GAB,"Sub-Saharan Africa",Africa,,FALSE
+Germany,DEU,"Global West",Europe,,FALSE
+Ghana,GHA,"Sub-Saharan Africa",Africa,,FALSE
+Greece,GRC,"Eastern Europe",Europe,,FALSE
+Grenada,GRD,"Latin America & Caribbean","North America",,TRUE
+Guatemala,GTM,"Latin America & Caribbean","North America",,FALSE
+Guinea,GIN,"Sub-Saharan Africa",Africa,,FALSE
+Guinea-Bissau,GNB,"Sub-Saharan Africa",Africa,,FALSE
+Guyana,GUY,"Latin America & Caribbean","South America",,FALSE
+Haiti,HTI,"Latin America & Caribbean","North America",,TRUE
+Honduras,HND,"Latin America & Caribbean","North America",,FALSE
+"Hong Kong",HKG,Asia-Pacific,Asia,,FALSE
+Hungary,HUN,"Eastern Europe",Europe,,FALSE
+India,IND,"Southern Asia",Asia,,FALSE
+Indonesia,IDN,Asia-Pacific,Asia,,TRUE
+Iraq,IRQ,"Greater Middle East",Asia,,FALSE
+Ireland,IRL,"Global West",Europe,,TRUE
+Israel,ISR,"Greater Middle East",Asia,,FALSE
+Italy,ITA,"Global West",Europe,,FALSE
+Jamaica,JAM,"Latin America & Caribbean","North America",,TRUE
+Japan,JPN,Asia-Pacific,Asia,,TRUE
+Jordan,JOR,"Greater Middle East",Asia,,FALSE
+Kenya,KEN,"Sub-Saharan Africa",Africa,,FALSE
+Kiribati,KIR,Asia-Pacific,Asia,,TRUE
+Kosovo,XKX,"Eastern Europe",Europe,,FALSE
+Kuwait,KWT,"Greater Middle East",Asia,,FALSE
+Laos,LAO,Asia-Pacific,Asia,,FALSE
+Lebanon,LBN,"Greater Middle East",Asia,,FALSE
+Lesotho,LSO,"Sub-Saharan Africa",Africa,,FALSE
+Liberia,LBR,"Sub-Saharan Africa",Africa,,FALSE
+Libya,LBY,"Greater Middle East",Africa,,FALSE
+Lithuania,LTU,"Eastern Europe",Europe,,FALSE
+Madagascar,MDG,"Sub-Saharan Africa",Africa,,TRUE
+Malawi,MWI,"Sub-Saharan Africa",Africa,,FALSE
+Malaysia,MYS,Asia-Pacific,Asia,,TRUE
+Maldives,MDV,"Southern Asia",Asia,,TRUE
+Mali,MLI,"Sub-Saharan Africa",Africa,,FALSE
+"Marshall Islands",MHL,Asia-Pacific,Asia,,TRUE
+Mauritania,MRT,"Sub-Saharan Africa",Africa,,FALSE
+Mauritius,MUS,"Sub-Saharan Africa",Africa,,TRUE
+Mexico,MEX,"Latin America & Caribbean","North America",,FALSE
+Micronesia,FSM,Asia-Pacific,Asia,,TRUE
+Morocco,MAR,"Greater Middle East",Africa,,FALSE
+Mozambique,MOZ,"Sub-Saharan Africa",Africa,,FALSE
+Namibia,NAM,"Sub-Saharan Africa",Africa,,FALSE
+Nauru,NRU,Asia-Pacific,Asia,,TRUE
+Nepal,NPL,"Southern Asia",Asia,,FALSE
+Netherlands,NLD,"Global West",Europe,,FALSE
+"New Zealand",NZL,"Global West",Oceania,,TRUE
+Nicaragua,NIC,"Latin America & Caribbean","North America",,FALSE
+Niger,NER,"Sub-Saharan Africa",Africa,,FALSE
+Nigeria,NGA,"Sub-Saharan Africa",Africa,,FALSE
+"North Macedonia",MKD,"Eastern Europe",Europe,,FALSE
+Norway,NOR,"Global West",Europe,,FALSE
+Oman,OMN,"Greater Middle East",Asia,,FALSE
+Pakistan,PAK,"Southern Asia",Asia,,FALSE
+Palau,PLW,Asia-Pacific,Oceania,,TRUE
+Panama,PAN,"Latin America & Caribbean","South America","North America",FALSE
+"Papua New Guinea",PNG,Asia-Pacific,Oceania,,TRUE
+Paraguay,PRY,"Latin America & Caribbean","South America",,FALSE
+Peru,PER,"Latin America & Caribbean","South America",,FALSE
+Philippines,PHL,Asia-Pacific,Asia,,TRUE
+Poland,POL,"Eastern Europe",Europe,,FALSE
+Portugal,PRT,"Global West",Europe,,FALSE
+Qatar,QAT,"Greater Middle East",Asia,,FALSE
+Romania,ROU,"Eastern Europe",Europe,,FALSE
+Rwanda,RWA,"Sub-Saharan Africa",Africa,,FALSE
+"Saint Kitts and Nevis",KNA,"Latin America & Caribbean","South America",,TRUE
+"Saint Lucia",LCA,"Latin America & Caribbean","South America",,TRUE
+"Saint Vincent and the Grenadines",VCT,"Latin America & Caribbean","South America",,TRUE
+Samoa,WSM,Asia-Pacific,Oceania,,TRUE
+"Sao Tome and Principe",STP,"Sub-Saharan Africa",Africa,,TRUE
+"Saudi Arabia",SAU,"Greater Middle East",Asia,,FALSE
+Senegal,SEN,"Sub-Saharan Africa",Africa,,FALSE
+Serbia,SRB,"Eastern Europe",Europe,,FALSE
+Seychelles,SYC,"Sub-Saharan Africa",Africa,,TRUE
+"Sierra Leone",SLE,"Sub-Saharan Africa",Africa,,FALSE
+Singapore,SGP,Asia-Pacific,Asia,,FALSE
+Slovakia,SVK,"Eastern Europe",Europe,,FALSE
+"Solomon Islands",SLB,Asia-Pacific,Oceania,,TRUE
+Somalia,SOM,"Sub-Saharan Africa",Africa,,FALSE
+"South Africa",ZAF,"Sub-Saharan Africa",Africa,,FALSE
+"South Korea",KOR,Asia-Pacific,Asia,,FALSE
+"South Sudan",SSD,"Sub-Saharan Africa",Africa,,FALSE
+Spain,ESP,"Global West",Europe,,FALSE
+"Sri Lanka",LKA,"Southern Asia",Asia,,TRUE
+Suriname,SUR,"Latin America & Caribbean","South America",,FALSE
+Sweden,SWE,"Global West",Europe,,FALSE
+Switzerland,CHE,"Global West",Europe,,FALSE
+Taiwan,TWN,Asia-Pacific,Asia,,TRUE
+Tanzania,TZA,"Sub-Saharan Africa",Africa,,FALSE
+Thailand,THA,Asia-Pacific,Asia,,FALSE
+"The Bahamas",BHS,"Latin America & Caribbean","North America",,TRUE
+"The Gambia",GMB,"Sub-Saharan Africa",Asia,,FALSE
+Timor-Leste,TLS,Asia-Pacific,Oceania,,TRUE
+Togo,TGO,"Sub-Saharan Africa",Africa,,FALSE
+Tonga,TON,Asia-Pacific,Oceania,,TRUE
+"Trinidad and Tobago",TTO,"Latin America & Caribbean","South America",,FALSE
+Tunisia,TUN,"Greater Middle East",Africa,,FALSE
+Turkey,TUR,"Eastern Europe",Europe,,FALSE
+Tuvalu,TUV,Asia-Pacific,Oceania,,TRUE
+Uganda,UGA,"Sub-Saharan Africa",Africa,,FALSE
+"United Arab Emirates",ARE,"Greater Middle East",Asia,,FALSE
+"United Kingdom",GBR,"Global West",Europe,,TRUE
+"United States of America",USA,"Global West","North America",,FALSE
+Uruguay,URY,"Latin America & Caribbean","South America",,FALSE
+Uzbekistan,UZB,"Former Soviet States",Asia,,FALSE
+Vanuatu,VUT,Asia-Pacific,Oceania,,TRUE
+Vietnam,VNM,Asia-Pacific,Asia,,FALSE
+Yemen,YEM,"Greater Middle East",Asia,,FALSE
+Zambia,ZMB,"Sub-Saharan Africa",Africa,,FALSE
+Zimbabwe,ZWE,"Sub-Saharan Africa",Africa,,FALSE
